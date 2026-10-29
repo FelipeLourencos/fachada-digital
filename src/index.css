@@ -1,0 +1,174 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+/* Archivo com os eixos de largura e peso: larga e pesada nos títulos, como letreiro de fachada; normal no texto */
+@import "@fontsource-variable/archivo/wdth.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-sans: 'Archivo Variable', system-ui, sans-serif;
+    --color-fundo: var(--fundo);
+    --color-escuro: var(--escuro);
+    --color-escuro-claro: var(--escuro-claro);
+    --color-tinta: var(--tinta);
+    --color-tinta-suave: var(--tinta-suave);
+    --color-destaque: var(--destaque);
+    --color-destaque-claro: var(--destaque-claro);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+    /*
+     * --escuro, --destaque e --fundo vêm de src/conteudo.ts (aplicadas em src/main.tsx).
+     * Os valores abaixo são só o padrão, caso o conteudo.ts não carregue.
+     */
+    --escuro: #0a1330;
+    --destaque: #d4f23f;
+    --fundo: #f2f4f9;
+
+    /* Tons derivados: o texto das seções claras é o próprio azul-marinho */
+    --tinta: var(--escuro);
+    --tinta-suave: color-mix(in oklab, var(--escuro) 74%, #fff);
+    --escuro-claro: color-mix(in oklab, var(--escuro) 90%, #fff);
+    --destaque-claro: color-mix(in oklab, var(--destaque) 70%, #fff);
+
+    --background: #fff;
+    --foreground: var(--tinta);
+    --card: #fff;
+    --card-foreground: var(--tinta);
+    --popover: #fff;
+    --popover-foreground: var(--tinta);
+    --primary: var(--escuro);
+    --primary-foreground: #fff;
+    --secondary: var(--fundo);
+    --secondary-foreground: var(--tinta);
+    --muted: var(--fundo);
+    --muted-foreground: var(--tinta-suave);
+    --accent: var(--fundo);
+    --accent-foreground: var(--tinta);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(from var(--tinta) l c h / 13%);
+    --input: oklch(from var(--tinta) l c h / 20%);
+    --ring: var(--escuro);
+    --radius: 0.625rem;
+}
+
+/* Topo, preço, chamada final e rodapé: fundo azul-marinho, texto claro, botões e detalhes no destaque */
+.secao-escura {
+    --background: var(--escuro);
+    --foreground: #fff;
+    --muted-foreground: color-mix(in oklab, #fff 76%, var(--escuro));
+    --primary: var(--destaque);
+    --primary-foreground: var(--escuro);
+    --border: oklch(1 0 0 / 14%);
+    --ring: var(--destaque);
+    background-color: var(--background);
+    color: var(--foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+  ::selection {
+    background: var(--destaque);
+    color: var(--escuro);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  /* Títulos: Archivo larga e pesada, como as letras do letreiro em cima da porta de uma loja */
+  .titulo-display,
+  .titulo-secao {
+    font-stretch: 125%;
+    text-wrap: balance;
+  }
+  .titulo-display {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+  }
+  .titulo-secao {
+    font-weight: 760;
+    letter-spacing: -0.025em;
+    line-height: 1.06;
+  }
+  .titulo-item {
+    font-stretch: 108%;
+    font-weight: 680;
+    line-height: 1.22;
+    text-wrap: balance;
+  }
+
+  /*
+   * Toldo listrado da fachada: listras de --listra px, alternando destaque e branco,
+   * com a borda de baixo recortada em meias-luas (uma por listra).
+   * A sombra no alto dá o volume do tecido saindo da parede.
+   */
+  .toldo {
+    --listra: 2.5rem;
+    --onda: 0.7rem;
+    background:
+      linear-gradient(to bottom, oklch(0 0 0 / 0.28), transparent 45%),
+      repeating-linear-gradient(
+        to right,
+        var(--destaque) 0 var(--listra),
+        #f7f9ff var(--listra) calc(var(--listra) * 2)
+      );
+    mask:
+      /* 1px a mais para não sobrar uma linha entre as listras e as ondas */
+      linear-gradient(#000 0 0) top / 100% calc(100% - var(--onda) + 1px) no-repeat,
+      radial-gradient(calc(var(--listra) / 2) var(--onda) at 50% 0, #000 97%, transparent 100%) bottom left /
+        var(--listra) var(--onda) repeat-x;
+  }
+  @media (min-width: 640px) {
+    .toldo {
+      --listra: 3.5rem;
+      --onda: 0.95rem;
+    }
+  }
+}
