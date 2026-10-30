@@ -60,8 +60,6 @@ export type Projeto = {
   prints: Prints
   /** Endereço do site publicado. "" esconde o link "Ver o site". */
   link: string
-  /** true mostra o selo "Projeto de demonstração". Cliente real: false (mostra o selo "Cliente"). */
-  demonstracao: boolean
 }
 
 export type Card = {
@@ -144,14 +142,10 @@ export type Conteudo = {
     itens: ItemIncluso[]
   }
 
-  /** Portfólio. Para um cliente real, acrescente um item com demonstracao: false. [] esconde. */
+  /** Portfólio. Para um site novo, acrescente um item. [] esconde. */
   portfolio: {
     titulo: string
     texto: string
-    /** Texto do selo dos projetos de demonstração. */
-    seloDemonstracao: string
-    /** Texto do selo dos clientes reais. */
-    seloCliente: string
     itens: Projeto[]
   }
 
@@ -307,13 +301,11 @@ export const conteudo: Conteudo = {
   },
 
   // ===== Portfólio =====
-  // Para um cliente real: rode npm run print-portfolio, copie um item abaixo, troque nome, ramo,
-  // prints e link, e use demonstracao: false. Clientes reais podem vir antes das demonstrações.
+  // Para um site novo: rode npm run print-portfolio, copie um item abaixo e troque nome, ramo,
+  // prints e link. Os itens aparecem na ordem da lista.
   portfolio: {
     titulo: "Sites que eu fiz",
     texto: "Veja como fica um site pronto, no computador e no celular.",
-    seloDemonstracao: "Projeto de demonstração",
-    seloCliente: "Cliente",
     itens: [
       {
         nome: "Thais Oliveira",
@@ -324,7 +316,6 @@ export const conteudo: Conteudo = {
           alt: "Topo do site da psicopedagoga Thais Oliveira, no computador e no celular",
         },
         link: "",
-        demonstracao: false,
       },
       {
         nome: "Corte Fino",
@@ -336,7 +327,6 @@ export const conteudo: Conteudo = {
         },
         // TROCAR pelo endereço do site publicado ("" esconde o link)
         link: "",
-        demonstracao: true,
       },
       {
         nome: "Marcos Eletricista",
@@ -348,7 +338,6 @@ export const conteudo: Conteudo = {
         },
         // TROCAR pelo endereço do site publicado ("" esconde o link)
         link: "",
-        demonstracao: true,
       },
     ],
   },

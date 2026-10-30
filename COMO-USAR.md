@@ -32,7 +32,7 @@ Antes de publicar, confirme que o build passa sem erros: `npm run build`.
 | `problema` | os três cards do problema |
 | `passos` | como funciona, em ordem |
 | `incluso` | o que vem no site, com ícones |
-| `portfolio` | sites do portfólio, com prints, link e o selo de demonstração |
+| `portfolio` | sites do portfólio, com prints e link |
 | `preco` | etiqueta, preço antigo e novo, condição, bônus e a linha da manutenção |
 | `perguntas` | perguntas frequentes |
 | `chamadaFinal` | título e frase antes do rodapé |
@@ -55,9 +55,8 @@ Antes de publicar, confirme que o build passa sem erros: `npm run build`.
 
    Gera `public/portfolio/padaria-do-ze-computador.webp` (topo no computador) e
    `public/portfolio/padaria-do-ze-celular.webp` (topo no celular).
-2. No `src/conteudo.ts`, copie um item de `portfolio.itens`, troque `nome`, `ramo`, `prints` e
-   `link`, e use `demonstracao: false` (o selo "Projeto de demonstração" some). Clientes reais
-   podem vir antes das demonstrações na lista.
+2. No `src/conteudo.ts`, copie um item de `portfolio.itens` e troque `nome`, `ramo`, `prints` e
+   `link`. Os sites aparecem na ordem da lista.
 3. Para mostrar o site do cliente no notebook e no celular do topo, aponte `topo.mockup` para os
    mesmos prints.
 
