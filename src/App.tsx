@@ -366,11 +366,14 @@ function Portfolio() {
           {portfolio.itens.map((projeto) => (
             <li key={projeto.nome} className="flex flex-col overflow-hidden rounded-2xl border border-border">
               <div className="secao-escura relative px-[7%] pt-15">
-                {projeto.demonstracao && (
-                  <span className="absolute top-4 left-4 z-10 rounded-full bg-destaque px-3 py-1 text-[0.82rem] font-bold text-escuro">
-                    {portfolio.seloDemonstracao}
-                  </span>
-                )}
+                <span
+                  className={cn(
+                    "absolute top-4 left-4 z-10 rounded-full px-3 py-1 text-[0.82rem] font-bold",
+                    projeto.demonstracao ? "bg-white/12 text-white" : "bg-destaque text-escuro",
+                  )}
+                >
+                  {projeto.demonstracao ? portfolio.seloDemonstracao : portfolio.seloCliente}
+                </span>
                 <Mockup prints={projeto.prints} />
               </div>
               <div className="flex flex-1 flex-wrap items-center justify-between gap-x-6 gap-y-3 p-5 sm:p-6">

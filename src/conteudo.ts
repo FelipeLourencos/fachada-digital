@@ -60,7 +60,7 @@ export type Projeto = {
   prints: Prints
   /** Endereço do site publicado. "" esconde o link "Ver o site". */
   link: string
-  /** true mostra o selo "Projeto de demonstração". Cliente real: false. */
+  /** true mostra o selo "Projeto de demonstração". Cliente real: false (mostra o selo "Cliente"). */
   demonstracao: boolean
 }
 
@@ -150,6 +150,8 @@ export type Conteudo = {
     texto: string
     /** Texto do selo dos projetos de demonstração. */
     seloDemonstracao: string
+    /** Texto do selo dos clientes reais. */
+    seloCliente: string
     itens: Projeto[]
   }
 
@@ -238,9 +240,9 @@ export const conteudo: Conteudo = {
       "A Fachada Digital cria o site do seu negócio: bonito, rápido no celular e com um botão que leva o cliente direto pro seu WhatsApp. Você vê uma prévia grátis antes de pagar qualquer coisa.",
     nota: "Prévia em até 24h, sem compromisso.",
     mockup: {
-      computador: "/portfolio/marcos-eletricista-computador.webp",
-      celular: "/portfolio/marcos-eletricista-celular.webp",
-      alt: "Site do Marcos Eletricista, projeto de demonstração, aberto num notebook e num celular",
+      computador: "/portfolio/thais-computador.webp",
+      celular: "/portfolio/thais-celular.webp",
+      alt: "Site da psicopedagoga Thais Oliveira aberto num notebook e num celular",
     },
   },
 
@@ -311,7 +313,19 @@ export const conteudo: Conteudo = {
     titulo: "Sites que eu fiz",
     texto: "Veja como fica um site pronto, no computador e no celular.",
     seloDemonstracao: "Projeto de demonstração",
+    seloCliente: "Cliente",
     itens: [
+      {
+        nome: "Thais Oliveira",
+        ramo: "psicopedagoga",
+        prints: {
+          computador: "/portfolio/thais-computador.webp",
+          celular: "/portfolio/thais-celular.webp",
+          alt: "Topo do site da psicopedagoga Thais Oliveira, no computador e no celular",
+        },
+        link: "",
+        demonstracao: false,
+      },
       {
         nome: "Corte Fino",
         ramo: "barbearia",
