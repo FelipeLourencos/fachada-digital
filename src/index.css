@@ -1,20 +1,23 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-/* Archivo com os eixos de largura e peso: larga e pesada nos títulos, como letreiro de fachada; normal no texto */
-@import "@fontsource-variable/archivo/wdth.css";
+/* Fraunces com o eixo de tamanho óptico: mais fina e elegante nos títulos grandes. Inter no texto. */
+@import "@fontsource-variable/fraunces/opsz.css";
+@import "@fontsource-variable/fraunces/opsz-italic.css";
+@import "@fontsource-variable/inter";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-sans: 'Archivo Variable', system-ui, sans-serif;
-    --color-fundo: var(--fundo);
-    --color-escuro: var(--escuro);
-    --color-escuro-claro: var(--escuro-claro);
-    --color-tinta: var(--tinta);
-    --color-tinta-suave: var(--tinta-suave);
+    --font-sans: 'Inter Variable', system-ui, sans-serif;
+    --font-serif: 'Fraunces Variable', Georgia, serif;
+    --color-noite: var(--noite);
+    --color-grafite: var(--grafite);
     --color-destaque: var(--destaque);
     --color-destaque-claro: var(--destaque-claro);
+    --color-texto: var(--texto);
+    --color-texto-suave: var(--texto-suave);
+    --color-linha: var(--linha);
     --color-ring: var(--ring);
     --color-input: var(--input);
     --color-border: var(--border);
@@ -44,51 +47,40 @@
 
 :root {
     /*
-     * --escuro, --destaque e --fundo vêm de src/conteudo.ts (aplicadas em src/main.tsx).
+     * --noite, --grafite e --destaque vêm de src/conteudo.ts (aplicadas em src/main.tsx).
      * Os valores abaixo são só o padrão, caso o conteudo.ts não carregue.
      */
-    --escuro: #0a1330;
-    --destaque: #d4f23f;
-    --fundo: #f2f4f9;
+    --noite: #0b1220;
+    --grafite: #111a2e;
+    --destaque: #e0a84f;
 
-    /* Tons derivados: o texto das seções claras é o próprio azul-marinho */
-    --tinta: var(--escuro);
-    --tinta-suave: color-mix(in oklab, var(--escuro) 74%, #fff);
-    --escuro-claro: color-mix(in oklab, var(--escuro) 90%, #fff);
-    --destaque-claro: color-mix(in oklab, var(--destaque) 70%, #fff);
+    /* Tons derivados */
+    --texto: #e9edf5;
+    --texto-suave: #a3aec2;
+    --linha: oklch(1 0 0 / 9%);
+    --destaque-claro: color-mix(in oklab, var(--destaque) 82%, #fff);
 
-    --background: #fff;
-    --foreground: var(--tinta);
-    --card: #fff;
-    --card-foreground: var(--tinta);
-    --popover: #fff;
-    --popover-foreground: var(--tinta);
-    --primary: var(--escuro);
-    --primary-foreground: #fff;
-    --secondary: var(--fundo);
-    --secondary-foreground: var(--tinta);
-    --muted: var(--fundo);
-    --muted-foreground: var(--tinta-suave);
-    --accent: var(--fundo);
-    --accent-foreground: var(--tinta);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(from var(--tinta) l c h / 13%);
-    --input: oklch(from var(--tinta) l c h / 20%);
-    --ring: var(--escuro);
-    --radius: 0.625rem;
-}
-
-/* Topo, preço, chamada final e rodapé: fundo azul-marinho, texto claro, botões e detalhes no destaque */
-.secao-escura {
-    --background: var(--escuro);
-    --foreground: #fff;
-    --muted-foreground: color-mix(in oklab, #fff 76%, var(--escuro));
+    --background: var(--noite);
+    --foreground: var(--texto);
+    --card: var(--grafite);
+    --card-foreground: var(--texto);
+    --popover: var(--grafite);
+    --popover-foreground: var(--texto);
     --primary: var(--destaque);
-    --primary-foreground: var(--escuro);
-    --border: oklch(1 0 0 / 14%);
+    --primary-foreground: var(--noite);
+    --secondary: var(--grafite);
+    --secondary-foreground: var(--texto);
+    --muted: var(--grafite);
+    --muted-foreground: var(--texto-suave);
+    --accent: var(--grafite);
+    --accent-foreground: var(--texto);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: var(--linha);
+    --input: oklch(1 0 0 / 14%);
     --ring: var(--destaque);
-    background-color: var(--background);
-    color: var(--foreground);
+    --radius: 0.625rem;
+
+    color-scheme: dark;
 }
 
 @layer base {
@@ -103,11 +95,11 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-size: 1.0625rem;
-    line-height: 1.6;
+    line-height: 1.65;
   }
   ::selection {
     background: var(--destaque);
-    color: var(--escuro);
+    color: var(--noite);
   }
   :focus-visible {
     outline: 2px solid var(--ring);
@@ -121,54 +113,44 @@
 }
 
 @layer components {
-  /* Títulos: Archivo larga e pesada, como as letras do letreiro em cima da porta de uma loja */
+  /* Títulos em Fraunces: o tamanho óptico afina o desenho nos tamanhos grandes */
   .titulo-display,
-  .titulo-secao {
-    font-stretch: 125%;
+  .titulo-secao,
+  .titulo-item {
+    font-family: var(--font-serif);
+    font-optical-sizing: auto;
     text-wrap: balance;
   }
   .titulo-display {
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 0.98;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.04;
   }
   .titulo-secao {
-    font-weight: 760;
-    letter-spacing: -0.025em;
-    line-height: 1.06;
+    font-weight: 420;
+    letter-spacing: -0.015em;
+    line-height: 1.12;
   }
   .titulo-item {
-    font-stretch: 108%;
-    font-weight: 680;
-    line-height: 1.22;
-    text-wrap: balance;
+    font-weight: 500;
+    line-height: 1.25;
   }
 
-  /*
-   * Toldo listrado da fachada: listras de --listra px, alternando destaque e branco,
-   * com a borda de baixo recortada em meias-luas (uma por listra).
-   * A sombra no alto dá o volume do tecido saindo da parede.
-   */
-  .toldo {
-    --listra: 2.5rem;
-    --onda: 0.7rem;
-    background:
-      linear-gradient(to bottom, oklch(0 0 0 / 0.28), transparent 45%),
-      repeating-linear-gradient(
-        to right,
-        var(--destaque) 0 var(--listra),
-        #f7f9ff var(--listra) calc(var(--listra) * 2)
-      );
-    mask:
-      /* 1px a mais para não sobrar uma linha entre as listras e as ondas */
-      linear-gradient(#000 0 0) top / 100% calc(100% - var(--onda) + 1px) no-repeat,
-      radial-gradient(calc(var(--listra) / 2) var(--onda) at 50% 0, #000 97%, transparent 100%) bottom left /
-        var(--listra) var(--onda) repeat-x;
+  /* Rótulo pequeno acima dos títulos: um traço no destaque e letras espaçadas */
+  .rotulo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--texto-suave);
   }
-  @media (min-width: 640px) {
-    .toldo {
-      --listra: 3.5rem;
-      --onda: 0.95rem;
-    }
+  .rotulo::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    background: var(--destaque);
   }
 }

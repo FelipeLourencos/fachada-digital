@@ -25,7 +25,7 @@ function conteudoNoHtml(): Plugin {
         return html
           .replaceAll('%CONTEUDO_TITULO%', escaparHtml(seo.titulo))
           .replaceAll('%CONTEUDO_DESCRICAO%', escaparHtml(seo.descricao))
-          .replaceAll("%CONTEUDO_COR_TEMA%", escaparHtml(cores.escuro))
+          .replaceAll("%CONTEUDO_COR_TEMA%", escaparHtml(cores.noite))
       },
     },
   }

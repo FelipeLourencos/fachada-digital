@@ -2,14 +2,15 @@
  * CONTEÚDO DO SITE
  * ================
  * Todo o texto da página de vendas da Fachada Digital fica neste arquivo: contato,
- * títulos, passos, preço, portfólio, perguntas e cores. Os componentes só leem daqui
+ * títulos, projetos, vantagens, passos, investimento e cores. Os componentes só leem daqui
  * (veja o COMO-USAR.md).
  *
  * Dicas rápidas
  * - Seção com lista vazia ([]) não aparece no site, e o link dela some do menu.
  * - Imagens ficam em public/, escritas a partir da barra.
- *   Ex.: public/portfolio/corte-fino-computador.webp vira "/portfolio/corte-fino-computador.webp".
- * - Para tirar os prints de um site novo para o portfólio: npm run print-portfolio (veja o COMO-USAR.md).
+ *   Ex.: public/portfolio/thais-mockup.webp vira "/portfolio/thais-mockup.webp".
+ * - Para pôr um site novo na vitrine: npm run print-portfolio e depois npm run mockup
+ *   (veja o COMO-USAR.md).
  * - Se faltar algum campo obrigatório, o editor sublinha em vermelho e o
  *   `npm run build` acusa o erro.
  */
@@ -19,47 +20,29 @@
 // ---------------------------------------------------------------------------
 
 /**
- * Ícones disponíveis para os cards do problema e a lista do que está incluso.
- * vitrine, instagram, busca, concorrente, confianca, site, celular, whatsapp, fotos,
- * mapa, dominio, atualizacao
+ * Ícones disponíveis para os cards de vantagens.
+ * busca, whatsapp, marca, celular, dominio, confianca
  */
-export type Icone =
-  | "vitrine"
-  | "instagram"
-  | "busca"
-  | "concorrente"
-  | "confianca"
-  | "site"
-  | "celular"
-  | "whatsapp"
-  | "fotos"
-  | "mapa"
-  | "dominio"
-  | "atualizacao"
+export type Icone = "busca" | "whatsapp" | "marca" | "celular" | "dominio" | "confianca"
 
 export type Link = {
   rotulo: string
-  /** Endereço completo (https://...) ou id de seção (#portfolio). */
+  /** Id da seção. Ex.: "#projetos". */
   link: string
 }
 
-/** Os dois prints de um site: topo no computador (1366x860) e no celular (375x812). */
-export type Prints = {
-  computador: string
-  celular: string
-  /** Descrição dos prints para leitores de tela e para o Google. */
-  alt: string
-}
-
-/** Um site do portfólio. */
+/** Um site da vitrine. O card não leva para o site: é só um exemplo. */
 export type Projeto = {
   /** Nome do negócio. Ex.: "Corte Fino". */
   nome: string
-  /** Ramo, mostrado ao lado do nome. Ex.: "barbearia". */
-  ramo: string
-  prints: Prints
-  /** Endereço do site publicado. "" esconde o link "Ver o site". */
-  link: string
+  /** Ramo, mostrado acima do nome. Ex.: "Barbearia". */
+  nicho: string
+  /** Notebook + celular gerado pelo npm run mockup. Ex.: "/portfolio/corte-fino-mockup.webp". */
+  mockup: string
+  /** Descrição do mockup para leitores de tela e para o Google. */
+  alt: string
+  /** O que o site tem. Use 3 itens em todos os projetos, para os cards ficarem do mesmo tamanho. */
+  destaques: string[]
 }
 
 export type Card = {
@@ -68,26 +51,28 @@ export type Card = {
   texto: string
 }
 
-export type ItemIncluso = {
-  icone: Icone
-  texto: string
-}
-
 export type Passo = {
   titulo: string
   texto: string
 }
 
-export type PerguntaFrequente = {
-  pergunta: string
-  resposta: string
+export type ItemInvestimento = {
+  titulo: string
+  /** Valor ou condição, ao lado do título. Ex.: "R$ 40/mês". */
+  valor: string
+  texto: string
+}
+
+/** Rótulo pequeno acima do título + título da seção. */
+type Cabecalho = {
+  rotulo: string
+  titulo: string
 }
 
 export type Conteudo = {
   /** Dados da empresa */
   empresa: {
     nome: string
-    slogan: string
     /** WhatsApp só com números: 55 + DDD + número. */
     whatsapp: string
     /** Mensagem que já vem escrita quando o cliente abre o WhatsApp. */
@@ -100,15 +85,8 @@ export type Conteudo = {
     descricao: string
   }
 
-  /** Textos dos botões de WhatsApp */
-  botoes: {
-    /** Todos os botões grandes da página. */
-    principal: string
-    /** Botão do cabeçalho (mais curto, para caber no celular). */
-    cabecalho: string
-    /** Texto lido por leitores de tela no botão flutuante (só no celular). */
-    flutuante: string
-  }
+  /** Texto de todos os botões de WhatsApp. */
+  botao: string
 
   /** Links do menu ("#id" da seção). Links de seções vazias somem sozinhos. */
   menu: Link[]
@@ -116,76 +94,44 @@ export type Conteudo = {
   /** Topo (primeira tela) */
   topo: {
     titulo: string
-    texto: string
-    /** Frase curta abaixo do botão. "" esconde. */
-    nota: string
-    /** Prints mostrados no notebook e no celular desenhados ao lado do título. */
-    mockup: Prints
+    subtitulo: string
   }
 
-  /** O problema: três cards. [] esconde. */
-  problema: {
-    titulo: string
+  /** Vitrine de projetos. Para um site novo, acrescente um item. [] esconde. */
+  portfolio: Cabecalho & {
+    itens: Projeto[]
+    /** Frase abaixo dos projetos. "" esconde. */
+    rodape: string
+  }
+
+  /** Por que ter um site: cards com ícone. [] esconde. */
+  vantagens: Cabecalho & {
     itens: Card[]
   }
 
   /** Como funciona: os passos, em ordem. [] esconde. */
-  passos: {
-    titulo: string
+  passos: Cabecalho & {
     itens: Passo[]
   }
 
-  /** O que está incluso. [] esconde. */
-  incluso: {
-    titulo: string
-    texto: string
-    itens: ItemIncluso[]
-  }
-
-  /** Portfólio. Para um site novo, acrescente um item. [] esconde. */
-  portfolio: {
-    titulo: string
-    texto: string
-    itens: Projeto[]
-  }
-
-  /** Card de preço */
-  preco: {
-    titulo: string
-    /** Etiqueta no topo do card. "" esconde. */
-    etiqueta: string
-    /** Preço antigo, riscado. "" esconde. */
-    de: string
-    por: string
-    /** Como paga, logo abaixo do preço. */
-    condicao: string
-    /** Bônus em destaque. "" esconde. */
-    bonus: string
-    /** Linha menor, depois do bônus. "" esconde. */
-    observacao: string
-  }
-
-  /** Perguntas frequentes. [] esconde. */
-  perguntas: {
-    titulo: string
-    itens: PerguntaFrequente[]
-  }
-
-  /** Chamada final, antes do rodapé */
-  chamadaFinal: {
-    titulo: string
-    /** Frase abaixo do título. "" esconde. */
-    texto: string
+  /** Investimento (seção final, em destaque) */
+  investimento: Cabecalho & {
+    preco: string
+    /** Logo abaixo do preço. */
+    legenda: string
+    /** Como paga. */
+    pagamento: string
+    itens: ItemInvestimento[]
   }
 
   /** Cores do tema, em hex. */
   cores: {
-    /** Fundo do topo, do preço e do rodapé. Azul-marinho quase preto. */
-    escuro: string
-    /** Botões, toldo e detalhes. Uma cor clara e viva, nunca usada como texto sobre fundo claro. */
+    /** Fundo da página. */
+    noite: string
+    /** Fundo das seções alternadas e dos cards (e do fundo dos mockups). */
+    grafite: string
+    /** Botões e detalhes. Use só em pontos pequenos. */
     destaque: string
-    /** Fundo das seções claras. */
-    fundo: string
   }
 }
 
@@ -193,210 +139,164 @@ export type Conteudo = {
 // Conteúdo da Fachada Digital. Edite daqui para baixo.
 // ---------------------------------------------------------------------------
 
-// ===== Dados da empresa =====
-const empresa: Conteudo["empresa"] = {
-  nome: "Fachada Digital",
-  slogan: "A fachada do seu negócio na internet",
-  whatsapp: "5511967869308",
-  mensagemWhatsapp: "Oi! Vi a página da Fachada Digital e quero uma prévia grátis do meu site.",
-}
-
 export const conteudo: Conteudo = {
-  empresa,
+  // ===== Dados da empresa =====
+  empresa: {
+    nome: "Fachada Digital",
+    whatsapp: "5511967869308",
+    mensagemWhatsapp: "Oi! Vi a página da Fachada Digital e quero fazer o site do meu negócio.",
+  },
 
   // ===== Google =====
   seo: {
-    titulo: "Fachada Digital | Sites para pequenos negócios",
+    titulo: "Fachada Digital | Sites sob medida para pequenos negócios",
     descricao:
-      "Site para pequenos negócios e profissionais autônomos: bonito, rápido no celular e com botão direto para o seu WhatsApp. Veja uma prévia grátis antes de pagar.",
+      "Sites sob medida para profissionais e pequenos negócios: feitos com a sua marca, rápidos no celular, com botão direto para o seu WhatsApp e domínio no seu nome.",
   },
 
   // ===== Botões =====
-  botoes: {
-    principal: "Quero minha prévia grátis",
-    cabecalho: "Prévia grátis",
-    flutuante: "Pedir minha prévia grátis pelo WhatsApp",
-  },
+  botao: "Quero meu site",
 
   // ===== Menu =====
   menu: [
+    { rotulo: "Projetos", link: "#projetos" },
+    { rotulo: "Vantagens", link: "#vantagens" },
     { rotulo: "Como funciona", link: "#como-funciona" },
-    { rotulo: "O que vem", link: "#incluso" },
-    { rotulo: "Portfólio", link: "#portfolio" },
-    { rotulo: "Preço", link: "#preco" },
-    { rotulo: "Dúvidas", link: "#duvidas" },
+    { rotulo: "Investimento", link: "#investimento" },
   ],
 
   // ===== Topo =====
   topo: {
-    titulo: "Seu cliente pesquisa no Google. Ele encontra você?",
-    texto:
-      "A Fachada Digital cria o site do seu negócio: bonito, rápido no celular e com um botão que leva o cliente direto pro seu WhatsApp. Você vê uma prévia grátis antes de pagar qualquer coisa.",
-    nota: "Prévia em até 24h, sem compromisso.",
-    mockup: {
-      computador: "/portfolio/thais-computador.webp",
-      celular: "/portfolio/thais-celular.webp",
-      alt: "Site da psicopedagoga Thais Oliveira aberto num notebook e num celular",
-    },
+    titulo: "A fachada do seu negócio na internet",
+    subtitulo: "Sites sob medida para profissionais e pequenos negócios.",
   },
 
-  // ===== O problema =====
-  problema: {
-    titulo: "Indicação é ótimo. Mas quem não te conhece precisa te achar.",
+  // ===== Projetos =====
+  // Para um site novo: rode npm run print-portfolio e npm run mockup, copie um item abaixo e troque
+  // nome, nicho, mockup, alt e destaques. Os itens aparecem na ordem da lista.
+  portfolio: {
+    rotulo: "Alguns projetos",
+    titulo: "Veja como pode ficar o seu",
     itens: [
       {
-        icone: "instagram",
-        titulo: "Depende só da OLX e do Instagram",
-        texto: "O anúncio some no meio dos outros, e o perfil só aparece para quem já te segue.",
+        nome: "Thais Oliveira",
+        nicho: "Psicopedagoga",
+        mockup: "/portfolio/thais-mockup.webp",
+        alt: "Site da psicopedagoga Thais Oliveira aberto num notebook e num celular",
+        destaques: [
+          "Apresentação da profissional e de como funciona o atendimento",
+          "Mapa, horários e avaliações do Google",
+          "Botão para agendar uma conversa pelo WhatsApp",
+        ],
       },
       {
-        icone: "concorrente",
-        titulo: "O cliente pesquisa no Google e acha o concorrente",
-        texto: "Quem precisa do serviço agora chama quem encontrou primeiro. Sem site, você nem entra na disputa.",
+        nome: "Corte Fino",
+        nicho: "Barbearia",
+        mockup: "/portfolio/corte-fino-mockup.webp",
+        alt: "Site da barbearia Corte Fino aberto num notebook e num celular",
+        destaques: [
+          "Serviços com o preço e a duração de cada um",
+          "Vídeo no topo e visual com a cara da barbearia",
+          "Horários, endereço e agendamento pelo WhatsApp",
+        ],
+      },
+    ],
+    rodape:
+      "Cada site é feito do zero com a identidade do seu negócio: psicopedagogas, barbearias, clínicas, prestadores de serviço e mais.",
+  },
+
+  // ===== Por que ter um site personalizado =====
+  vantagens: {
+    rotulo: "Vantagens",
+    titulo: "Por que ter um site personalizado",
+    itens: [
+      {
+        icone: "busca",
+        titulo: "Aparece quando o cliente pesquisa no Google",
+        texto: "O site é preparado para o Google, com o seu nome, os seus serviços e a região onde você atende.",
+      },
+      {
+        icone: "whatsapp",
+        titulo: "Botão direto para o seu WhatsApp",
+        texto: "Com um toque, o cliente abre a conversa com você, com a mensagem já escrita.",
+      },
+      {
+        icone: "marca",
+        titulo: "Feito com a sua marca",
+        texto: "Cores, fotos e textos pensados para o seu negócio, e não um modelo genérico.",
+      },
+      {
+        icone: "celular",
+        titulo: "Rápido e bonito no celular",
+        texto: "Pensado primeiro para a tela do celular, onde o seu cliente vai abrir o site.",
+      },
+      {
+        icone: "dominio",
+        titulo: "Domínio no seu nome",
+        texto: "O endereço .com.br fica registrado no seu nome. O site é seu.",
       },
       {
         icone: "confianca",
-        titulo: "Sem site, fica difícil passar confiança para quem não te conhece",
-        texto: "Antes de chamar, a pessoa quer ver seu trabalho, onde você atende e como falar com você.",
+        titulo: "Mais confiança que só um perfil no Instagram",
+        texto: "Reúne num lugar só o que o cliente quer saber antes de chamar: serviços, endereço e contato.",
       },
     ],
   },
 
   // ===== Como funciona =====
   passos: {
+    rotulo: "Passo a passo",
     titulo: "Como funciona",
     itens: [
       {
-        titulo: "Você me chama no WhatsApp",
-        texto: "Me conta do seu negócio: o que você faz, onde atende e como o cliente fala com você.",
+        titulo: "Conversa",
+        texto: "Você me chama no WhatsApp e conta sobre o seu negócio: o que faz, para quem e onde atende.",
       },
       {
-        titulo: "Em até 24h, a prévia",
-        texto: "Eu te mando uma prévia de como ficaria o seu site, de graça.",
+        titulo: "Prévia com o seu conteúdo",
+        texto: "Eu monto uma prévia do site com os seus textos, fotos e cores, para você ver como vai ficar.",
       },
       {
-        titulo: "Gostou? Metade para começar",
-        texto: "Você paga metade e eu deixo tudo pronto.",
+        titulo: "Ajustes",
+        texto: "Você aponta o que quer mudar e eu faço os ajustes antes de publicar.",
       },
       {
-        titulo: "Site no ar, a outra metade",
-        texto: "O site vai ao ar no seu endereço .com.br e você paga a outra metade.",
+        titulo: "Site no ar",
+        texto: "O site é publicado no seu domínio, pronto para você mandar aos seus clientes.",
       },
     ],
   },
 
-  // ===== O que está incluso =====
-  incluso: {
-    titulo: "O que vem no seu site",
-    texto: "Tudo o que o cliente precisa para te conhecer e te chamar, numa página só.",
-    itens: [
-      { icone: "site", texto: "Site profissional de uma página" },
-      { icone: "celular", texto: "Versão para celular e computador" },
-      { icone: "whatsapp", texto: "Botão direto para o seu WhatsApp" },
-      { icone: "fotos", texto: "Seus serviços, fotos e a região que você atende" },
-      { icone: "mapa", texto: "Mapa e horários de atendimento" },
-      { icone: "dominio", texto: "Endereço .com.br no seu nome" },
-      { icone: "atualizacao", texto: "2 meses de atualizações inclusos" },
-    ],
-  },
-
-  // ===== Portfólio =====
-  // Para um site novo: rode npm run print-portfolio, copie um item abaixo e troque nome, ramo,
-  // prints e link. Os itens aparecem na ordem da lista.
-  portfolio: {
-    titulo: "Sites que eu fiz",
-    texto: "Veja como fica um site pronto, no computador e no celular.",
+  // ===== Investimento =====
+  investimento: {
+    rotulo: "Investimento",
+    titulo: "Quanto custa ter o seu site",
+    preco: "R$ 500",
+    legenda: "pela criação do site",
+    pagamento: "R$ 250 para começar e R$ 250 quando o site estiver no ar. Pix ou cartão.",
     itens: [
       {
-        nome: "Thais Oliveira",
-        ramo: "psicopedagoga",
-        prints: {
-          computador: "/portfolio/thais-computador.webp",
-          celular: "/portfolio/thais-celular.webp",
-          alt: "Topo do site da psicopedagoga Thais Oliveira, no computador e no celular",
-        },
-        link: "",
+        titulo: "Domínio próprio",
+        valor: "cerca de R$ 40 por ano",
+        texto: "O endereço .com.br fica no seu nome, pago direto no Registro.br.",
       },
       {
-        nome: "Corte Fino",
-        ramo: "barbearia",
-        prints: {
-          computador: "/portfolio/corte-fino-computador.webp",
-          celular: "/portfolio/corte-fino-celular.webp",
-          alt: "Topo do site da barbearia Corte Fino, no computador e no celular",
-        },
-        // TROCAR pelo endereço do site publicado ("" esconde o link)
-        link: "",
+        titulo: "Ajustes",
+        valor: "2 meses inclusos",
+        texto: "Nos dois primeiros meses, os ajustes já estão incluídos no valor.",
       },
       {
-        nome: "Marcos Eletricista",
-        ramo: "eletricista",
-        prints: {
-          computador: "/portfolio/marcos-eletricista-computador.webp",
-          celular: "/portfolio/marcos-eletricista-celular.webp",
-          alt: "Topo do site do Marcos Eletricista, no computador e no celular",
-        },
-        // TROCAR pelo endereço do site publicado ("" esconde o link)
-        link: "",
+        titulo: "Manutenção opcional",
+        valor: "R$ 40/mês a partir do 3º mês",
+        texto: "Hospedagem, suporte e pequenas alterações. É opcional: o site continua sendo seu.",
       },
     ],
-  },
-
-  // ===== Preço =====
-  preco: {
-    titulo: "Quanto custa",
-    etiqueta: "Oferta de lançamento",
-    de: "R$ 800",
-    por: "R$ 500",
-    condicao: "metade para começar, metade quando o site estiver no ar",
-    bonus: "",
-    observacao:
-      "Manutenção opcional a partir do 3º mês: R$ 40/mês para atualizações e suporte. O site é seu de qualquer jeito.",
-  },
-
-  // ===== Perguntas frequentes =====
-  perguntas: {
-    titulo: "Perguntas frequentes",
-    itens: [
-      {
-        pergunta: "Preciso entender de tecnologia?",
-        resposta: "Não. Você me conta do seu negócio e me manda as fotos. Eu faço todo o resto.",
-      },
-      {
-        pergunta: "Quanto tempo demora?",
-        resposta:
-          "A prévia chega em até 24h. Depois que você me passa as informações e paga a primeira metade, o site vai ao ar em poucos dias.",
-      },
-      {
-        pergunta: "E se eu não gostar da prévia?",
-        resposta: "Você não paga nada. A prévia é grátis e sem compromisso.",
-      },
-      {
-        pergunta: "O site fica meu?",
-        resposta: "Sim. O endereço .com.br fica registrado no seu nome.",
-      },
-      {
-        pergunta: "E se eu não quiser a manutenção?",
-        resposta:
-          "O site continua no ar do mesmo jeito. Só as atualizações e o suporte deixam de estar inclusos.",
-      },
-      {
-        pergunta: "Como pago?",
-        resposta: "Por Pix: metade no início e metade na entrega, quando o site estiver no ar.",
-      },
-    ],
-  },
-
-  // ===== Chamada final =====
-  chamadaFinal: {
-    titulo: "Veja como ficaria o site do seu negócio antes de decidir.",
-    texto: "Me chame no WhatsApp e receba a prévia em até 24h.",
   },
 
   // ===== Cores =====
   cores: {
-    escuro: "#0a1330",
-    destaque: "#d4f23f",
-    fundo: "#f2f4f9",
+    noite: "#0B1220",
+    grafite: "#111A2E",
+    destaque: "#E0A84F",
   },
 }
